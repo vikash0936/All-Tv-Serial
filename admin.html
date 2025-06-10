@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Admin Panel</title>
+         
+          <!-- ================= FAVICON ================= -->
+          <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+          <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+          <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+          <link rel="manifest" href="/site.webmanifest">
+          <link rel="shortcut icon" href="/favicon.ico">
+          <!-- ============================================= -->
+
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(45deg, #f953c6, #b91d73);
+            --secondary-gradient: linear-gradient(to right, #ff416c, #ff4b2b);
+            --background-dark: #121212;
+            --card-background: #1E1E1E;
+            --input-background: #333333;
+            --text-primary: #FFFFFF;
+            --text-secondary: #AAAAAA;
+            --blue: #3672f8;
+        }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--background-dark); color: var(--text-primary); margin: 0; padding: 0; }
+        .header { background: var(--card-background); padding: 18px 20px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        .header h1 { font-size: 1.5rem; margin: 0; text-transform: uppercase; letter-spacing: 1px; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .container { padding: 20px; }
+        .admin-section { background-color: var(--card-background); padding: 20px; border-radius: 12px; margin-bottom: 25px; }
+        .admin-section h2 { font-size: 1.2rem; margin-top: 0; margin-bottom: 20px; color: var(--text-primary); border-left: 4px solid #f953c6; padding-left: 10px; }
+        .admin-form { display: flex; flex-direction: column; gap: 15px; }
+        .form-input { width: 100%; padding: 14px; border-radius: 8px; border: 1px solid #555; background-color: var(--input-background); color: var(--text-primary); font-size: 1rem; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        textarea.form-input { resize: vertical; min-height: 80px; }
+        .admin-form button, #save-marquee-btn { padding: 15px; border-radius: 8px; border: none; background: var(--primary-gradient); color: var(--text-primary); font-size: 1.1rem; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .movie-item { display: flex; align-items: center; background-color: #2a2a2a; padding: 12px 15px; border-radius: 8px; margin-bottom: 10px; }
+        .movie-title { flex-grow: 1; margin: 0; font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .action-buttons { display: flex; gap: 10px; }
+        .action-buttons button { padding: 10px; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; }
+        .edit-btn { background-color: var(--blue); }
+        .delete-btn { background: var(--secondary-gradient); }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px); align-items: center; justify-content: center; overflow-y: auto; padding: 20px 0; }
+        .modal-content { background-color: var(--card-background); padding: 25px; border-radius: 12px; width: 90%; max-width: 500px; position: relative; margin: auto; }
+        .close-btn { color: var(--text-secondary); position: absolute; top: 15px; right: 20px; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .hidden { display: none; }
+        .marquee-form-container { display: flex; flex-direction: column; gap: 20px; }
+        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        .input-group label { font-weight: 500; color: var(--text-secondary); }
+        .toggle-group { display: flex; justify-content: space-between; align-items: center; background-color: var(--input-background); padding: 10px 15px; border-radius: 8px; }
+        .switch { position: relative; display: inline-block; width: 51px; height: 31px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #555; transition: .4s; border-radius: 31px; }
+        .slider:before { position: absolute; content: ""; height: 23px; width: 23px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background: var(--primary-gradient); }
+        input:checked + .slider:before { transform: translateX(20px); }
+    </style>
+</head>
+<body>
+    <header class="header"><h1>Admin Panel</h1></header>
+    <main class="container">
+        
+        <section class="admin-section">
+            <h2>Marquee Settings</h2>
+            <div class="marquee-form-container">
+                <div class="input-group">
+                    <label for="marquee-text">Marquee Text</label>
+                    <input type="text" id="marquee-text" class="form-input" placeholder="Enter scrolling text...">
+                </div>
+                <div class="toggle-group">
+                    <label for="marquee-toggle">Show Marquee on App</label>
+                    <label class="switch">
+                        <input type="checkbox" id="marquee-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <button id="save-marquee-btn">Save Marquee Settings</button>
+            </div>
+        </section>
+
+        <section class="admin-section">
+            <h2>Upload New Movie</h2>
+            <form id="upload-form" class="admin-form">
+                <input type="text" id="movie-title" class="form-input" placeholder="Movie Title" required>
+                <input type="url" id="poster-url" class="form-input" placeholder="Poster Image URL (1:1 Ratio)" required>
+                <textarea id="short-description" class="form-input" placeholder="Short Description" required></textarea>
+                <input type="text" id="telegram-username" class="form-input" placeholder="Telegram Channel Username (e.g., mychannel)" required>
+                <input type="url" id="ads-link" class="form-input" placeholder="Download with Ads URL">
+                <button type="submit">Upload Movie</button>
+            </form>
+        </section>
+
+        <section class="admin-section">
+            <h2>Manage Movies</h2>
+            <div id="manage-movie-list">
+                <p id="list-loader">Loading list...</p>
+            </div>
+        </section>
+    </main>
+    
+    <div id="edit-modal" class="modal">
+      <div class="modal-content">
+        <span id="close-modal-btn" class="close-btn">×</span>
+        <h2>Edit Movie</h2>
+        <form id="edit-form" class="admin-form">
+          <input type="hidden" id="edit-id">
+          <input type="text" id="edit-title" class="form-input" placeholder="Movie Title" required>
+          <input type="url" id="edit-poster-url" class="form-input" placeholder="Poster URL" required>
+          <textarea id="edit-description" class="form-input" placeholder="Short Description" required></textarea>
+          <input type="text" id="edit-telegram-username" class="form-input" placeholder="Telegram Channel Username" required>
+          <input type="url" id="edit-ads-link" class="form-input" placeholder="Download with Ads URL">
+          <button type="submit">Save Changes</button>
+        </form>
+      </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, doc, getDoc, updateDoc, deleteDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+ apiKey: "AIzaSyCfdPK96L0UpfmdAWOUEf_dILgtalmOrJg",
+  authDomain: "moon-tv-797d7.firebaseapp.com",
+  databaseURL: "https://moon-tv-797d7-default-rtdb.firebaseio.com",
+  projectId: "moon-tv-797d7",
+  storageBucket: "moon-tv-797d7.firebasestorage.app",
+  messagingSenderId: "1046316714465",
+  appId: "1:1046316714465:web:7fb4762e94672495042aa0",
+  measurementId: "G-YWPT5J3CJ6"
+};
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Marquee JS
+        const marqueeTextInput = document.getElementById('marquee-text');
+        const marqueeToggle = document.getElementById('marquee-toggle');
+        const saveMarqueeBtn = document.getElementById('save-marquee-btn');
+        const marqueeRef = doc(db, "settings", "marquee");
+        getDoc(marqueeRef).then((docSnap) => { if (docSnap.exists()) { const settings = docSnap.data(); marqueeTextInput.value = settings.text || ""; marqueeToggle.checked = settings.isEnabled || false; } });
+        saveMarqueeBtn.addEventListener('click', async () => { await setDoc(marqueeRef, { text: marqueeTextInput.value, isEnabled: marqueeToggle.checked }, { merge: true }); alert('Marquee settings saved!'); });
+
+        // Movie Management JS
+        const moviesCollectionRef = collection(db, "movies");
+        const uploadForm = document.getElementById('upload-form');
+        const movieList = document.getElementById('manage-movie-list');
+        const listLoader = document.getElementById('list-loader');
+        const editModal = document.getElementById('edit-modal');
+        const editForm = document.getElementById('edit-form');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitButton = uploadForm.querySelector('button');
+            submitButton.textContent = 'Uploading...';
+            submitButton.disabled = true;
+            try {
+                await addDoc(moviesCollectionRef, {
+                    title: document.getElementById('movie-title').value,
+                    posterUrl: document.getElementById('poster-url').value,
+                    description: document.getElementById('short-description').value,
+                    telegramUsername: document.getElementById('telegram-username').value,
+                    adsLink: document.getElementById('ads-link').value,
+                    uploadedAt: serverTimestamp()
+                });
+                alert('Movie uploaded!');
+                uploadForm.reset();
+            } catch (err) { console.error(err); alert("Error: " + err.message); } 
+            finally { submitButton.textContent = 'Upload Movie'; submitButton.disabled = false; }
+        });
+        
+        onSnapshot(query(moviesCollectionRef, orderBy("uploadedAt", "desc")), (snapshot) => {
+            listLoader.classList.add('hidden');
+            movieList.innerHTML = '';
+            if (snapshot.empty) { movieList.innerHTML = '<p>No movies uploaded yet.</p>'; return; }
+            snapshot.forEach((doc) => {
+                const movie = doc.data();
+                movieList.innerHTML += `<div class="movie-item"><p class="movie-title">${movie.title}</p><div class="action-buttons"><button class="edit-btn" data-id="${doc.id}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" viewBox="0 0 16 16"><path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/><path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/></svg></button><button class="delete-btn" data-id="${doc.id}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg></button></div></div>`;
+            });
+        });
+
+        movieList.addEventListener('click', async (e) => {
+            const button = e.target.closest('button');
+            if (!button) return;
+            const id = button.dataset.id;
+            if (button.classList.contains('delete-btn')) {
+                if (confirm("Are you sure?")) { await deleteDoc(doc(db, "movies", id)); }
+            }
+            if (button.classList.contains('edit-btn')) {
+                const docRef = doc(db, "movies", id);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const movie = docSnap.data();
+                    document.getElementById('edit-id').value = id;
+                    document.getElementById('edit-title').value = movie.title;
+                    document.getElementById('edit-poster-url').value = movie.posterUrl;
+                    document.getElementById('edit-description').value = movie.description;
+                    document.getElementById('edit-telegram-username').value = movie.telegramUsername;
+                    document.getElementById('edit-ads-link').value = movie.adsLink;
+                    editModal.style.display = 'flex';
+                }
+            }
+        });
+
+        function hideModal() { editModal.style.display = 'none'; }
+        closeModalBtn.addEventListener('click', hideModal);
+        
+        editForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('edit-id').value;
+            await updateDoc(doc(db, "movies", id), {
+                title: document.getElementById('edit-title').value,
+                posterUrl: document.getElementById('edit-poster-url').value,
+                description: document.getElementById('edit-description').value,
+                telegramUsername: document.getElementById('edit-telegram-username').value,
+                adsLink: document.getElementById('edit-ads-link').value
+            });
+            hideModal();
+        });
+    </script>
+</body>
+</html>
